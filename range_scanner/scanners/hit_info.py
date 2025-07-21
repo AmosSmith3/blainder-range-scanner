@@ -18,3 +18,5 @@ class HitInfo:
 
         self.partID = None
         self.categoryID = None
+
+        self.beam_angle = None

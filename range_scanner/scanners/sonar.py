@@ -114,6 +114,11 @@ def performScan(context,
 
     totalNumberOfRays = xRange.size * yRange.size * int((frameEnd - frameStart + 1) / frameStep)
 
+    # Precompute beam angles defined in local coordinates, for use in hit_info.HitInfo
+    beam_angles_local_pos = np.linspace(0, fovSonar / 2.0, int(ySteps))
+    beam_angles_local_neg = np.linspace(0, -fovSonar/2, int(ySteps))
+    beam_angles_local_rad = np.radians(np.concatenate((beam_angles_local_neg, beam_angles_local_pos)))
+
     # array to store hit information
     # we don't know how many of our rays will actually hit an object, so we allocate
     # memory for the worst case of every ray hitting the scene
@@ -195,6 +200,7 @@ def performScan(context,
                 interference_noise_add = uniform(interferenceNoiseRangeMin, interferenceNoiseRangeMax)
                 interference_noise_activated = True
 
+        current_beam_idx = 0
 
         # iterate over all X/Y coordinates
         for x in xRange:
@@ -349,6 +355,8 @@ def performScan(context,
 
                     closestHit.categoryID = categoryIDs[closestHit.target["categoryID"]]
                     closestHit.partID = partIDs[partIDIndex]
+
+                    closestHit.beam_angle = beam_angles_local_rad[current_beam_idx]
                     
                     noise = noiseAbsoluteOffset + (closestHit.distance * noiseRelativeOffset / 100.0)
 
@@ -415,6 +423,7 @@ def performScan(context,
                         print("NO HIT within range of %f" % maxDistance)
                 
                 indexY += 1
+                current_beam_idx += 1
 
                 if singleRay:
                     break

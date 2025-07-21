@@ -10,7 +10,7 @@ def export(filePath, fileName, data, exportNoiseData):
 
         if exportNoiseData:
             # write header to file
-            writer.writerow(["categoryID", "partID", "X", "Y", "Z", "distance", "X_noise", "Y_noise", "Z_noise", "distance_noise", "intensity", "red", "green", "blue"])
+            writer.writerow(["categoryID", "partID", "X", "Y", "Z", "distance", "beam_angle", "X_noise", "Y_noise", "Z_noise", "distance_noise", "intensity", "red", "green", "blue"])
 
             for hit in data:
                 # concatenate each entry and write it to a file
@@ -24,6 +24,7 @@ def export(filePath, fileName, data, exportNoiseData):
                         hit[0], hit[1],
                         hit[2], hit[3], hit[4], 
                         hit[5],
+                        hit[14],
                         hit[10], hit[11], hit[12], 
                         hit[13], 
                         hit[6],

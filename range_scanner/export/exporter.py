@@ -43,7 +43,8 @@ class Exporter:
             hit.intensity,                                                          # 6
             hit.color[0], hit.color[1], hit.color[2],                               # 7, 8, 9
             hit.noiseLocation.x, hit.noiseLocation.y, hit.noiseLocation.z,          # 10, 11, 12
-            hit.noiseDistance                                                       # 13
+            hit.noiseDistance,                                                      # 13
+            hit.beam_angle,                                                         # 14
         ])
 
 
