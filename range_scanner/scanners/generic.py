@@ -287,6 +287,7 @@ def startScan(context, properties, objectName):
                     properties.sourceLevel, properties.noiseLevel, properties.directivityIndex, properties.processingGain, properties.receptionThreshold,   
                     properties.simulateWaterProfile, depthList,   
                     properties.addNoise, properties.noiseType, properties.mu, properties.sigma, properties.addConstantNoise, properties.noiseAbsoluteOffset, properties.noiseRelativeOffset,
+                    properties.interferenceNoise, properties.interferenceNoiseChancePerPing, properties.interferenceNoiseChancePerBeam,properties.interferenceNoiseRangeMin, properties.interferenceNoiseRangeMax,
                     properties.addMesh,
                     properties.exportLAS, properties.exportHDF, properties.exportCSV, properties.exportPLY, properties.exportSingleFrames,
                     properties.dataFilePath, cleanedFileName,

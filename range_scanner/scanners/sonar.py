@@ -10,6 +10,7 @@ import colorsys
 import os
 import sys
 import math
+from random import uniform
 
 from .. import error_distribution
 from .. import material_helper
@@ -77,6 +78,7 @@ def performScan(context,
                 sourceLevel, noiseLevel, directivityIndex, processingGain, receptionThreshold,    
                 simulateWaterProfile, depthList,  
                 addNoise, noiseType, mu, sigma, addConstantNoise, noiseAbsoluteOffset, noiseRelativeOffset,
+                interferenceNoise, interferenceNoiseChancePerPing, interferenceNoiseChancePerBeam, interferenceNoiseRangeMin, interferenceNoiseRangeMax,
                 addMesh,
                 exportLAS, exportHDF, exportCSV, exportPLY, exportSingleFrames,
                 dataFilePath, dataFileName,
@@ -183,6 +185,16 @@ def performScan(context,
             # all values are above the sensor or no values are given
             # in both cases we don't have to care about refraction
             simulateWaterProfile = False
+
+        #Check for interference noise for current ping
+        interference_noise_add = 0.0
+        interference_noise_activated = False
+
+        if interferenceNoise:
+            if uniform(0, 1) < interferenceNoiseChancePerPing:
+                interference_noise_add = uniform(interferenceNoiseRangeMin, interferenceNoiseRangeMax)
+                interference_noise_activated = True
+
 
         # iterate over all X/Y coordinates
         for x in xRange:
@@ -351,6 +363,15 @@ def performScan(context,
 
                     # calculate distance with noise
                     noiseDistance = closestHit.distance + noise
+
+                    if interference_noise_activated:
+
+                        # Interference noise is activated on the ping, check if interference noise should be added to the current beam
+                        if uniform(0, 1) < interferenceNoiseChancePerBeam:
+                            # Interference noise is added to the current beam with reduced gaussian noise and the categoryID is set to 'none'
+                            noiseDistance = interference_noise_add + noise/ 2.0
+                            closestHit.categoryID = categoryIDs['none']
+
                     
                     # calculate the direction vector with noise applied
                     noiseDirection =  direction.normalized() * noiseDistance

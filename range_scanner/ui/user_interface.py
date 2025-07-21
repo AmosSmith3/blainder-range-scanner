@@ -740,6 +740,43 @@ class ScannerProperties(PropertyGroup):
         default = 0.0,
     )
 
+    interferenceNoise: BoolProperty(
+        name="Add interference noise",
+        description="Enable or disable interference noise",
+        default = False
+    )
+
+    interferenceNoiseChancePerPing: FloatProperty(
+        name = "Chance per ping",
+        description = "Chance of interference noise to occurr per ping, in percent (0.0 - 1.0, 0.0 = no pings have noise, 1.0 = all ping have noise)",
+        default = 0.3,
+        min = 0.0,
+        max = 1.0
+    )
+
+    interferenceNoiseRangeMin: FloatProperty(
+        name = "Minimum range",
+        description = "Minimum distance of interference noise in meter, if it occurs",
+        default = 2.5,
+        min = 0.0,
+        max = 20.0
+    )
+
+    interferenceNoiseRangeMax: FloatProperty(
+        name = "Maximum range",
+        description = "Maximum distance of interference noise in meter, if it occurs",
+        default = 10.0,
+        min = 0.0,
+        max = 20.0
+    )
+
+    interferenceNoiseChancePerBeam: FloatProperty(
+        name = "Chance per beam",
+        description = "When a ping has interference noise, the chance a beam in the ping will have noise (0.0 - 1.0, 0.0 = no beams have noise, 1.0 = all beams have noise)",
+        default = 0.3,
+        min = 0.0,
+        max = 1.0
+    )
 
 
 
@@ -1965,6 +2002,15 @@ class OBJECT_PT_NOISE_PANEL(MAIN_PANEL, Panel):
         verticalLayout.prop(properties, "mu")
         verticalLayout.prop(properties, "sigma")
         column.enabled = properties.addNoise
+
+        layout.separator()
+        layout.prop(properties, "interferenceNoise")
+        column = layout.column()
+        column.prop(properties, "interferenceNoiseChancePerPing")
+        column.prop(properties, "interferenceNoiseChancePerBeam")
+        column.prop(properties, "interferenceNoiseRangeMin")
+        column.prop(properties, "interferenceNoiseRangeMax")
+        column.enabled = properties.interferenceNoise
 
 
 class OBJECT_PT_WEATHER_PANEL(MAIN_PANEL, Panel):
