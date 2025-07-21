@@ -101,6 +101,14 @@ def getTargetIndices(targets, debugOutput):
         if not materialName in partIDs:
             partIDs[materialName] = partIndex
             partIndex += 1
+    
+    # Overwrite the categoryIDs with given labels, to ensure that CategoryIDS are always the same
+    # and not dependent on the order of the objects in the scene
+    categoryIDs = {}
+    categoryIndex = 0
+    for i in bpy.context.scene["labels_list"]:
+        categoryIDs[i] = categoryIndex
+        categoryIndex += 1
 
     return (categoryIDs, partIDs)
 
