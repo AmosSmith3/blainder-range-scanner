@@ -464,7 +464,7 @@ def performScan(context,
     if len(slicedScannedValues) > 0:
         # setup exporter with our data
         if exportLAS or exportHDF or exportCSV or exportPLY:
-            fileExporter = exporter.Exporter(dataFilePath, "%s_frame_%d" % (dataFileName, frameNumber), dataFileName, slicedScannedValues, targets, categoryIDs, partIDs, materialMappings, exportNoiseData, 0, 0)
+            fileExporter = exporter.Exporter(dataFilePath, "%s" % (dataFileName), dataFileName, slicedScannedValues, targets, categoryIDs, partIDs, materialMappings, exportNoiseData, 0, 0)
 
             # export to each format
             if exportLAS:
